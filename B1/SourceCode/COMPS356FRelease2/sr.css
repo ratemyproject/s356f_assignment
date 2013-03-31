@@ -1,0 +1,40 @@
+#srrest{
+padding-left:30px;
+border-bottom:solid 1px #FFA500;
+}
+
+#srrest{
+border: solid 1px transparent;
+margin:50px 10px 0px 10px;
+border-bottom:solid 1px #FFA500;
+}
+#srrest img{
+float:left;
+margin:0px 0px 0px 0px;
+}
+#srrest li{
+border: solid 1px transparent;
+margin:0px 0px 0px 20px;
+}
+#srrest ul {
+padding-left: 150px;
+margin-top:-3px
+}
+
+#rising input{
+border: solid 1px #C35617;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+font-size:14px;
+background-color: #F88017;
+color:white;
+}
+
+#map_canvas{
+width:230px; height:230px;
+margin-top: -240px;
+}
+
+#inmenu{
+padding-top:10px;
+}

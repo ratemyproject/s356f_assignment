@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="index.css">
+<title>Login</title>
+</head>
+<body>
+<div id="header">
+
+<div id="logo"><a href="index.php"><img src="image\icon.png" /></a></div>
+<!--search bar(new version)-->
+
+
+ </div>
+
+<div id="share">
+<span class='st_sharethis_large' displayText='ShareThis'></span>
+<span class='st_facebook_large' displayText='Facebook'></span>
+<span class='st_twitter_large' displayText='Tweet'></span>
+<span class='st_linkedin_large' displayText='LinkedIn'></span>
+<span class='st_email_large' displayText='Email'></span>
+</div>
+  <div id="container">
+  <div id="search">
+
+		<form action="searchbox.php" method="GET" style=" color: orange; ">
+		<b>Search Restaurant </b>
+		<select name="district">
+		<option value="" selected>Select District</option>
+		<option value="all">--Hong Kong--</option>
+		<option value="Hong Kong Island">-Hong Kong Island-</option>
+		<option value="The Peak">The Peak</option>
+		<option value="Kowloon">-Kowloon-</option>
+		<option value="Kwun Tong">Kwun Tong</option>
+		<option value="Sham Shui Po">Sham Shui Po</option>
+		<option value="New Territories">-New Territories-</option>
+		<option value="Tuen Mun">Tuen Mun</option>
+		</select>
+
+<select name="keywordstype">
+<option value="name" selected>Name</option>
+<option value="address">Address</option>
+<option value="tel">Telephone</option>
+</select>
+
+<input type="text" name="keyword"></input>
+<button type="submit">submit</button>
+</form>
+
+</div>
+<div id="recommendation">
+  
+<div id="loginf">
+<p><b>Become a new member <a href="reg.php">    Register now</a></b></p>
+<ul style='list-style-type:none'>
+<li>
+<form method='post' action='login.php'>
+			Username : <input type='text' name='username'/> </br>       
+			Password: <input type='password' name='pw'/></br>
+			<input type='submit'  id = 'button' value='Login' />
+</form>
+</li></ul>
+</div>
+</div>
+</div>
+<div id="footer">
+<p>Copyright@CLOUD</p>
+</div>
+</body>
+</html>  
