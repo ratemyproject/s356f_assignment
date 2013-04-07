@@ -38,7 +38,7 @@ echo "<a href='login.html'>Login </a>|<a href='reg.php'> New Members </a>";
 <h2>Please enter the following information</h2>
 <div id="regform">
             <form id="form1" name="form1" method="post" action="reg_action.php" onsubmit="return checkForm(this);">
-               Username : <input type="text" id="uesrname" name="username" /><br />
+               Username : <input type="text" id="username" name="username" /><br />
                Password : <input type="password" name="pwd" id="pwd" /><p class="explain">(6-32 characters, must contain uppercase and lowercase letter)</p><br />
                Re-enter Password : <input type="password" name="repwd" id="repwd" /><br />
                Members type : </br>
@@ -73,32 +73,36 @@ function showlist(){
 <script type="text/javascript">
   function checkPassword(str)
   {
-    var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/;
+    var re = /^(?=.*[a-z])(?=.*[A-Z])\w{6,}/;
     return re.test(str);
   }
 
   function checkForm(form)
   {
-    if(form.txtUser.value == "") {
+	if (form.pwd.value != form.repwd.value) {
+		alert("Two passwords are not matched");
+		return false;
+	}
+    if(form.username.value == "") {
       alert("Error: Username cannot be blank!");
-      form.txtUser.focus();
+      form.username.focus();
       return false;
     }
     re = /^\w+$/;
-    if(!re.test(form.txtUser.value)) {
+    if(!re.test(form.username.value)) {
       alert("Error: Username must contain only letters, numbers and underscores!");
-      form.txtUser.focus();
+      form.username.focus();
       return false;
     }
-    if(form.txtPassword.value != "" && form.txtPassword.value == form.rePassword.value) {
-      if(!checkPassword(form.txtPassword.value)) {
+    if(form.pwd.value != "" && form.pwd.value == form.repwd.value) {
+      if(!checkPassword(form.pwd.value)) {
         alert("The password you have entered is not valid!");
-        form.txtPassword.focus();
+        form.pwd.focus();
         return false;
       }
     } else {
       alert("Error: Please check that you've entered and confirmed your password!");
-      form.txtPassword.focus();
+      form.pwd.focus();
       return false;
     }
     return true;

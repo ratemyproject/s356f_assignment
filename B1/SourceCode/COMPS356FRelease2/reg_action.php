@@ -10,6 +10,11 @@ if($num_rows){ trigger_error('Username exists.', E_USER_WARNING);
 $status = 1; echo "<script> alert('Username exists'); </script>"; }
  
 $password    =    mysql_real_escape_string($_POST['pwd']);
+if (strcmp($num_rows,$_POST['repwd'])!=0) {
+	trigger_error("Password doesn't match with confirmed password",E_USER_WARNING);
+	$status = 1;
+	echo "<script>alert('Password doesn't match with confirmed password');</script>";
+}
 $restTel	 =    mysql_real_escape_string($_POST['tel']);
 $email=    mysql_real_escape_string($_POST['email']); 
 
