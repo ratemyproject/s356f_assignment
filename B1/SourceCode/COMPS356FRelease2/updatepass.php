@@ -77,7 +77,7 @@ echo "<a href='login.html'>Login </a>|<a href='reg.php'> New Members </a>";
 			$result = mysql_query($temp);
 			$row = mysql_fetch_row($result);
 			if ($new == $renew && $row[0] == md5($old)) {
-				$sql = "update acc set Password = '".md5($new)."' where UserName = '".$id."'";
+				$sql = "update acc set Password = '".md5($new)."' where UserName = '".$id."'"; //hello Testing
 				if (mysql_query($sql)) {
 					echo "<p style='color:#0000FF; padding:25px 0 25px 15px; text-align:center'>Password Changed! Redirecting....</p>";
 					echo "<meta http-equiv=REFRESH CONTENT=2;url=memberpanel.php>";
