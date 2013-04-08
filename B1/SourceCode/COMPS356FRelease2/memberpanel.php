@@ -200,7 +200,7 @@ if($_GET['ad'] == "changepw"){
 		}
 }else if($_GET['ad']=='createRest'){ ?>
 			<form action="upload_file.php" method="post"
-			enctype="multipart/form-data">Upload Image:<br />
+			enctype="multipart/form-data" id="uploadImgForm">Upload Image:<br />
 			<label for="file">Filename:</label>
 			<input type="file" name="file" id="file"><br>
 			<input type="submit" name="submit" value="Submit">
@@ -238,8 +238,12 @@ if($_GET['ad'] == "changepw"){
 		          <option value='Tuen Mun'>Tuen Mun</option>
 				  </select>
                   <br />
-			      <input type = 'submit' value = 'Create!' />
-				  </form>";
+			      <input type = 'submit' value = 'Create!' />";
+			if (isset($_SESSION['logo_name'])) {
+				echo "<input type = 'hidden' name='logo_name' value = '".$_SESSION['logo_name']."'/>";
+				unset($_SESSION['logo_name']);
+			}
+			echo  "</form>";
 }
 
 mysql_close();

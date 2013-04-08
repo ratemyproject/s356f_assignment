@@ -88,8 +88,9 @@ session_start();
       "temporary/" . $_FILES["file"]["name"]);
       echo "Stored in: " . "temporary/" . $_FILES["file"]["name"];
 	  include_once("mysql_connection.php");
-	  $sql = "UPDATE restaurants SET rlogo = '".$_FILES["file"]["name"]."' where owner='".$_SESSION['username']."'";
-	  mysql_query($sql) or die("query error");
+	  $_SESSION['logo_name'] = $_FILES["file"]["name"];
+	  //$sql = "UPDATE restaurants SET rlogo = '".$_FILES["file"]["name"]."' where owner='".$_SESSION['username']."'";
+	  //mysql_query($sql) or die("query error");
       }
     }
 ?>

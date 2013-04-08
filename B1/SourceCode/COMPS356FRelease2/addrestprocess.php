@@ -7,7 +7,8 @@
 
 	$id = $_SESSION['username'];
     $name = $_POST['restName'];  
-	$tel = $_POST['restTel'];  
+	$tel = $_POST['restTel']; 
+	$logo = ($_POST['logo_name'] != null ?$_POST['logo_name']:'');
 	$des = $_POST['restDes']; 
 	$area = $_POST['area'];
 	$dist = $_POST['dist'];
@@ -36,7 +37,7 @@
 	$result = mysql_query($sql);
 	$row = mysql_fetch_row($result);
 	$row[0]++;
-	$sql = "insert into restaurants (`rid`, `rname`, `raddr`, `area`, `district`, `rtel`, `rlogo`, `owner`, `rdes`) VALUES ('".$restid."', '".$name."', '".$add."', '".$area."', '".$dist."', '".$tel."', '', '".$id."', '".$des."') ";
+	$sql = "insert into restaurants (`rid`, `rname`, `raddr`, `area`, `district`, `rtel`, `rlogo`, `owner`, `rdes`) VALUES ('".$restid."', '".$name."', '".$add."', '".$area."', '".$dist."', '".$tel."', '".$logo."', '".$id."', '".$des."') ";
 	if ($result = mysql_query($sql)) {
 	    echo "Restaurant created!</br>";
 		echo "<a href='memberpanel.php'>back</a>";
