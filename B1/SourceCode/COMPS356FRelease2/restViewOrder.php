@@ -53,21 +53,26 @@ border-radius:21px 21px 0 0;">Restaurant View Order</h2>
 	    echo "<p> No record is found.</p>";
 	} else {	
 	$count = 0;
-	$sqlordercount = "select count(distinct orderid) from `order` where restid ='".$rowid[0]."'";
+	$sqlordercount = "select count(distinct orderid) as idTotal from `order` where restid ='".$rowid[0]."'";
 	$resultordercount = mysql_query($sqlordercount);
 	$ordercount= mysql_result($resultordercount, 0);
-	$sqlstart = "select min(orderid) from `order` where restid ='".$rowid[0]."'";
+	$sqlstart = "select min(orderid) as minId from `order` where restid ='".$rowid[0]."'";
 	$startorder = mysql_result(mysql_query($sqlstart), 0);
-	$sqlend = "select max(orderid) from `order` where restid ='".$rowid[0]."'";
+	$sqlend = "select max(orderid) as maxId from `order` where restid ='".$rowid[0]."'";
 	$endorder = mysql_result(mysql_query($sqlend), 0);
     
 	while ($rows = mysql_fetch_array($resultmain)) {
 	    if ($rowid[0] == $rows['restid']) {
 	    $sqlrest = "select rname from restaurants where rid = '".$rows['restid']."'";
-		$sqlfood = "select food from menu where foodid = '".$rows['foodid']."' and restaurantid = '".$rows['restid']."'";
+		if (preg_match('/^[FD]/',$rows['foodid']) == 1) {
+			$sqlfood = "select food from menu where foodid = '".$rows['foodid']."' and restaurantid = '".$rows['restid']."'";
+		} else {
+			$sqlfood = "select name from setmenu where setMenuId = '".$rows['foodid']."' and restaurantid = '".$rows['restid']."'";
+		}
 		$sqldistrict = "select district from restaurants where rid = '".$rows['restid']."'";
 		$rest[$count] = mysql_result(mysql_query($sqlrest), 0);
-		$food[$count] = mysql_result(mysql_query($sqlfood), 0);
+		$foodResultArray = mysql_fetch_array(mysql_query($sqlfood));
+		$food[$count] = $foodResultArray[0];
 		$district[$count] = mysql_result(mysql_query($sqldistrict), 0);
 		$orderid[$count] = $rows['orderid'];
 		$address[$count] = $rows['address'];
@@ -82,11 +87,14 @@ border-radius:21px 21px 0 0;">Restaurant View Order</h2>
 	$max = $count-1;
    
 	$count = 0;
+	$statusCount = 0;
 	do {
 	    if ($count <= $max ) {
 		$sqlstatus = "select distinct`status` from `order` where `restid` = '".$rowid[0]."' and `orderid` = '".$orderid[$count]."'";
 		$resultt = mysql_query($sqlstatus);
-		$status[$count] = mysql_result($resultt, 0);
+		$statusResultArray = mysql_fetch_array($resultt);
+		$status[$statusCount] = $statusResultArray[0];
+		$statusCount = $statusCount + 1;
 	    echo "<table>";
 		echo "<tr>";
 		echo "<th id='th1'>Order ID: ".$orderid[$count]." </th>
@@ -96,7 +104,7 @@ border-radius:21px 21px 0 0;">Restaurant View Order</h2>
 		echo "</tr>";
 		echo "<tr>";
 		echo "<th colspan='4' align='left'>Address To Be Delivered: ".$address[$count]."<br></br></th>";
-		echo "<th colspan='4' align='left'>Order Status: ".$status[$count]."<br></br></th>";
+		echo "<th colspan='4' align='left'>Order Status: ".$status[$statusCount-1]."<br></br></th>";
 		echo "</tr>";
 		echo "<tr>";
 		echo "<th>Restaurant</th><th>District</th><th>Food Name</th><th>Quantity Ordered</th>";
@@ -107,26 +115,26 @@ border-radius:21px 21px 0 0;">Restaurant View Order</h2>
 	        echo "<tr style='text-align:center'>";
 		    echo "<td>".$rest[$count]."</td><td>".$district[$count]."</td><td>".$food[$count]."</td><td>".$quantity[$count]."</td>";
 	        echo "</tr>";
-			if ($status[$count] == 'waiting') {
-					echo "<tr>";
-		echo "<td>";
-		
-		echo "<form action = 'restOrderCon.php' method = 'post'>
-		      <input type = 'hidden' name = 'stat' value = 'accept'/>
-			  <input type = 'hidden' name = 'id' id = 'button' value = '".$orderid[$count]."'/>
-
-	          <input type = 'submit' value = 'accept' />
-		      </form> </td>";
-	    echo "<td><form action = 'restOrderCon.php' method = 'post'>
-		      <input type = 'hidden' name = 'stat' value = 'decline'/>
-			  <input type = 'hidden' name = 'id' id = 'button' value = '".$orderid[$count]."'/>
-
-	          <input type = 'submit' value = 'decline' />
-		      </form> </td> </tr>";	 }
 		    $count++;
 			
 	    } while ($count <= $max && $orderid[$count] == $startorder && $userrecord[$count] == $user);
+		if (strcmp($status[$statusCount-1], 'waiting')==0) {
+			echo "<tr>";
+			echo "<td>";
+			
+			echo "<form action = 'restOrderCon.php' method = 'post'>
+				  <input type = 'hidden' name = 'stat' value = 'accept'/>
+				  <input type = 'hidden' name = 'id' id = 'button' value = '".$orderid[$count-1]."'/>
 
+				  <input type = 'submit' value = 'accept' />
+				  </form> </td>";
+			echo "<td><form action = 'restOrderCon.php' method = 'post'>
+				  <input type = 'hidden' name = 'stat' value = 'decline'/>
+				  <input type = 'hidden' name = 'id' id = 'button' value = '".$orderid[$count-1]."'/>
+
+				  <input type = 'submit' value = 'decline' />
+				  </form> </td> </tr>";
+		}
 	    echo "</table>";
 		echo "<img src='image\Seperateline.png' style='margin:0 0 30px 0'>";
 		echo "<br />";

@@ -9,6 +9,12 @@ if(!isset($_SESSION['username'])){
 <link rel="stylesheet" type="text/css" href="menberpanelmenu.css">
 <link rel="stylesheet" type="text/css" href="index.css">
 <title>Member Panel - ONLINE Restaurant</title>
+<style type="text/css">
+a.normalLink {
+	border-bottom:1px solid #069;
+	color:#069;
+}
+</style>
 </head>
 
 <body>
@@ -76,7 +82,9 @@ echo
 <li><a href='memberpanel.php?ad=addmenu'>Add Menu</a></li>
 <li><a href='memberpanel.php?ad=delmenu'>Delete Menu</a></li>
 </ul>
-</li>";
+</li>"; ?>
+<li><a href='memberpanel.php?ad=manage_set_menu'>Manage Set Menu</a></li>
+<?php
 }
 ?>
 <?php
@@ -99,7 +107,6 @@ echo
 
 <li><a href="logout.php">Logout</a></li>
 </ul>
-
 
 <?php
 if(isset($_GET['ad'])){
@@ -244,8 +251,34 @@ if($_GET['ad'] == "changepw"){
 				unset($_SESSION['logo_name']);
 			}
 			echo  "</form>";
+} else if ($_GET['ad']=='manage_set_menu') { 
+	$rid_sql = 'select rid from restaurants where owner = "'.$_SESSION['username'].'"';
+	$result = mysql_query($rid_sql);
+	$row = mysql_fetch_array($result);
+	$rid = $row['rid'];
+?>
+	<a href="addNewSetMenu.php?rid=<?php echo $rid; ?>" class="normalLink">add a new set menu</a>
+	<img src='image\Seperateline.png'/ style="display:block;">
+<?php
+	$result = mysql_query('select setMenuId, name from setmenu where restaurantid = (select rid from restaurants where owner = "'.$_SESSION['username'].'")');
+	if(mysql_num_rows($result) > 0){ ?>
+	<form action="setMenuManager.php" method="post">
+	<h3>Existing Set Menus</h3>
+<?php		while($row = mysql_fetch_array($result)){
+?>
+<input type="checkbox" name="selected[]" value="<?php echo $row['setMenuId']; ?>"><?php echo $row['name']; ?>
+<br/>
+<?php } ?>
+	<input type="hidden" name="rid" value="<?php echo $rid; ?>"/>
+	<input type="submit" name="manageFormSubmit" value="modify"/>
+	<input type="submit" name="manageFormSubmit" value="delete"/>
+	</form>
+<?php } else { ?>
+	<p>No Set Menu stored</p>
+<?php }
 }
-
+?>
+<?php
 mysql_close();
 }
 ?>

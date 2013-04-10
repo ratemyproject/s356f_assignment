@@ -10,7 +10,7 @@
 	$sql = "SELECT * FROM restaurants WHERE rid='".$rid."'";
 	$sql2 = "SELECT * FROM menu WHERE restaurantid='".$rid."'";
  	$result = mysql_query($sql);
-	$result2 = mysql_query("SELECT * FROM restaurants WHERE rlogo='".$_GET['rid']."'"); 
+	$result2 = mysql_query("SELECT * FROM restaurants WHERE rlogo='".$_GET['rid']."'");
 	$menuresult = mysql_query($sql2);
 	$row = mysql_fetch_assoc($result);
 	$data=mysql_fetch_array($result2); 
@@ -180,6 +180,36 @@ while($row2 = mysql_fetch_array($menuresult)) {
 		<td><input type='textbox' name='F".$row2['foodid']."' id='F".$row2['foodid']."' value='0' onchange='calculate(".'"F'.$row2['foodid'].'"'.", ".$row2['price'].")'></input></td>
 		<input type='hidden' id='previousF".$row2['foodid']."' value='0')></input>
 		</tr>";
+}
+
+$sql3 = "select setMenuId from setmenu where restaurantid='".$rid."'";
+$setMenuIdResult = mysql_query($sql3);
+while ($row2 = mysql_fetch_array($setMenuIdResult)){
+	$name_sql = 'select name from setmenu where restaurantid="'.$rid.'" and setMenuId="'.$row2['setMenuId'].'"';
+	$nameResult = mysql_query($name_sql);
+	$nameResultArray = mysql_fetch_array($nameResult);
+	$name = $nameResultArray['name'];
+	$setMenuCost_sql = 'select round(sum(price),2) as total from setmenuitems where rid="'.$rid.'" and setMenuId="'.$row2['setMenuId'].'"';
+	$setMenuCostResult = mysql_query($setMenuCost_sql);
+	$setMenuCostResultArray = mysql_fetch_array($setMenuCostResult);
+	$setMenuCost = $setMenuCostResultArray['total'];
+	echo"<tr>
+		<td><p name='".$name."'>".$name."</p></td>
+		<td><p>$".$setMenuCost."</p></td>
+		<td><input type='textbox' name='S".$row2['setMenuId']."' id='S".$row2['setMenuId']."' value='0' onchange='calculate(".'"S'.$row2['setMenuId'].'"'.", ".$setMenuCost.")'></input></td>
+		<input type='hidden' id='previousS".$row2['setMenuId']."' value='0')></input>
+		</tr>";
+	$setMenuItemNames_sql = 'select foodName from setmenuitems where rid="'.$rid.'" and setMenuId="'.$row2['setMenuId'].'"';
+	$setMenuItemNames = mysql_query($setMenuItemNames_sql);
+	$setMenuItemNamesArray = mysql_fetch_array($setMenuItemNames);
+	$setMenuDescription = '(includes '.$setMenuItemNamesArray['foodName'];
+	while ($setMenuItemNamesArray = mysql_fetch_array($setMenuItemNames)) {
+		$setMenuDescription = $setMenuDescription.', '.$setMenuItemNamesArray['foodName'];
+	}
+	$setMenuDescription = $setMenuDescription.')';
+	echo "<tr>
+			<td colspan='3'><p>".$setMenuDescription."</p></td>
+			</tr>";
 }
 
 		echo"<tr>
